@@ -1,35 +1,115 @@
 ## User Stories
 
-##### As a user, I want to input information about apartment complexes in order to add apartments later.
+<pre>
+  As an apartment hunter
+  I want to input information about apartment complexes
+  In order to add apartments later.
 
-* I can input arguments for location, parking, website, phone number and office hours.
+  Usage: ./apt_hunter create complex "location" "parking" "website" "phone number"
 
-##### As a user, I want to input data on available apartments in order to filter and sort it later.
+  Acceptance Criteria:
+  * I can input arguments for location, parking, website, and phone number.
+  * A success message is printed if information is store in the database.
+</pre>
 
-* I can input arguments for price, size, number of bedrooms and number of baths.
-* I can input argument for apartment complexes, if the information has already been entered.
+<pre>
+  As an apartment hunter
+  I want to input data on available apartments
+  In order to filter and sort it later.
 
-##### As a user, I want to be able to display apartment and apartment complex entries.
+  Usage: ./apt_hunter create apartment "rent" "size" "bedrooms" "baths"
 
-* Queries about apartment complexes must show up correctly.
-* Queries about apartments must show up correctly including the name of the associated apartment complex.
+  Acceptance Criteria:
+  * I can input arguments for price, size, number of bedrooms and number of baths.
+  * I can input argument for apartment complexes, if the information has already been entered.
+  * A success message is printed if information is store in the database.
+</pre>
 
-##### As a user, I want to update apartment and apartment complex entries.
+<pre>
+  As an apartment hunter
+  I want to be able to display apartment entries.
 
-* I can enter an apartment id and update any of the fields.
-* I can enter an apartment complex id and update any of the fields.
+  Usage: ./apt_hunter view apartments
 
-##### As a user, I want to be able to delete apartment and apartment complex entries.
+  Acceptance Criteria:
+  * Apartments must show up correctly including information about the associated apartment complex.
+</pre>
 
-* I can enter an apartment id and delete any of the fields.
-* I can enter an apartment complex id and delete any of the fields.
+<pre>
+  As an apartment hunter
+  I want to be able to display apartment complex entries.
 
-##### As a user, I want to filter by monthly rent in order to see the apartments in my price range.
+  Usage: ./apt_hunter view complexes
 
-* I can narrow apartments by an upper and/or lower value.
+  Acceptance Criteria:
+  * Apartment complexes must show up correctly.
+  * Does not print out any information about the individual apartments.
+</pre>
 
-##### As a user, I want to sort apartment search results by size or number of bedrooms.
+<pre>
+  As an apartment hunter
+  I want to update apartment entries.
 
-* I can sort by size.
-* I can sort by number of bedrooms.
-* I can sort by number of bedrooms, and then by size within a number of bedrooms.
+  Usage: ./apt_hunter update apartment "apartment id" "rent" "size" "bedrooms" "baths"
+
+  Acceptance Criteria:
+  * I can enter an apartment id and update any of the fields.
+  * A success message confirms data for "apartment id" was updated.
+</pre>
+
+<pre>
+  As an apartment hunter
+  I want to update apartment complex entries.
+
+  Usage: ./apt_hunter update complex "complex id" "location" "parking" "website" "phone number"
+
+  Acceptance Criteria:
+  * I can enter an apartment complex id and update any of the fields.
+  * A success message confirms data for "complex id" was updated.
+</pre>
+
+<pre>
+  As an apartment hunter
+  I want to be able to delete apartment entries.
+
+  Usage: ./apt_hunter delete apartment "apartment id"
+
+  Acceptance Criteria:
+  * I can enter an apartment id and delete any of the fields.
+  * A success message confirms data for "apartment id" was deleted.
+</pre>
+
+<pre>
+  As an apartment hunter
+  I want to be able to delete apartment complex entries.
+
+  Usage: ./apt_hunter delete complex "complex id"
+
+  Acceptance Criteria:
+  * I can enter an apartment complex id and delete any of the fields.
+  * A success message confirms data for "complex id" was deleted.
+</pre>
+
+<pre>
+  As an apartment hunter
+  I want to filter by monthly rent
+  In order to see the apartments in my price range.
+
+  Usage: ./apt_hunter filter rent "min" "max"
+
+  Acceptance Criteria:
+  * I can enter an upper and/or lower value for rent.
+  * Only the apartment in that range will be displayed.
+</pre>
+
+<pre>
+  As an apartment hunter
+  I want to sort apartment search results by size or number of bedrooms.
+
+  Usage: ./apt_hunter sort bedrooms size
+
+  Acceptance Criteria:
+  * I can sort by size.
+  * I can sort by number of bedrooms.
+  * I can sort by number of bedrooms, and then by size within a number of bedrooms.
+</pre>
