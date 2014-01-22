@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+
+command = ARGV[0]
+type = ARGV[1]
+options = {}
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: apt_hunter [command] [options]"
+
+  opts.on("--name [NAME]", "The name") do |name|
+    options[:name] = name
+  end
+end.parse!
+
+unless options[:name]
+  puts "You must provide the name of the apartment complex"
+end
