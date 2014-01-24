@@ -2,7 +2,7 @@ require 'optparse'
 
 class ComplexParser
   def self.parse
-    options = {}
+    options = {environment: "production"}
     OptionParser.new do |opts|
       opts.banner = "Usage: apt_hunter [command] [options]"
 
@@ -20,6 +20,9 @@ class ComplexParser
       end
       opts.on("--phone [phone]", "phone") do |phone|
         options[:phone] = phone
+      end
+      opts.on("--environment [env]", "environment") do |env|
+        options[:environment] = env
       end
     end.parse!
     options

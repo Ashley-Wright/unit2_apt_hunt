@@ -33,7 +33,7 @@ class TestEnteringComplexes < AptHuntTest
   end
 
   def test_valid_complex_saved
-    `./apt_hunter add complex --name 'Garden Terrace' --zip 37075 --parking garage --website 'www.gardenterrace.com' --phone '555-555-5555'`
+    `./apt_hunter add complex --name 'Garden Terrace' --zip 37075 --parking garage --website 'www.gardenterrace.com' --phone '555-555-5555' --environment test`
     results = database.execute("select name, zip, parking, website, phone from complexes")
     expected = ["Garden Terrace", 37075, "garage", "www.gardenterrace.com", "555-555-5555"]
     assert_equal expected, results[0]
@@ -43,7 +43,7 @@ class TestEnteringComplexes < AptHuntTest
   end
 
   def test_invalid_complex_not_saved
-    `./apt_hunter add complex --name 'Garden Terrace'`
+    `./apt_hunter add complex --name 'Garden Terrace' --environment test`
     result = database.execute("select count(id) from complexes")
     assert_equal 0, result[0][0]
   end
