@@ -39,6 +39,7 @@ class ComplexParser
       else
         error = "You must provide the #{missing_arguments[0..-2].join(", ") + " and"} #{missing_arguments.last} of the apartment complex."
       end
+      error
     end
   end
 end
