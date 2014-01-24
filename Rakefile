@@ -10,6 +10,6 @@ task :default => :test
 
 task :bootstrap_database do
   require 'sqlite3'
-  database = SQLite3::Database.new("apt_hunter_test")
+  database = SQLite3::Database.new("db/apt_hunter.sqlite3")
   database.execute("CREATE TABLE complexes (id INTEGER PRIMARY KEY AUTOINCREMENT, name varchar(50), zip integer, parking varchar(15), website varchar(50), phone varchar(14))")
 end

@@ -2,7 +2,7 @@ require 'minitest/autorun'
 
 class AptHuntTest < MiniTest::Unit::TestCase
   def database
-    @database ||= SQLite3::Database.new("apt_hunter_test")
+    @database ||= SQLite3::Database.new("db/apt_hunter.sqlite3")
   end
 
   def teardown

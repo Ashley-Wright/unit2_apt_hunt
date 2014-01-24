@@ -10,7 +10,7 @@ error_message = ComplexParser.validate(options)
 
 if error_message.nil?
   require "sqlite3"
-  database = SQLite3::Database.new("apt_hunter_test")
+  database = SQLite3::Database.new("db/apt_hunter.sqlite3")
   statement = "insert into complexes(name, zip, parking, website, phone) values('#{options[:name]}', #{options[:zip]}, '#{options[:parking]}', '#{options[:website]}', '#{options[:phone]}')"
   database.execute(statement)
   puts "Complex #{options[:name]} was created."
