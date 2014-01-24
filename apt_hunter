@@ -1,47 +1,14 @@
 #!/usr/bin/env ruby
-
-require 'optparse'
+require_relative 'lib/complex_parse_arguments'
 
 command = ARGV[0]
 type = ARGV[1]
-options = {}
 
-OptionParser.new do |opts|
-  opts.banner = "Usage: apt_hunter [command] [options]"
+options = ComplexParser.parse
+error_messages = ComplexParser.validate(options)
 
-  opts.on("--name [NAME]", "name") do |name|
-    options[:name] = name
-  end
-
-  opts.on("--zip [ZIP]", "zip code") do |zip|
-    options[:zip] = zip
-  end
-
-  opts.on("--parking [parking]", "parking") do |parking|
-    options[:parking] = parking
-  end
-
-  opts.on("--website [website]", "website") do |website|
-    options[:website] = website
-  end
-
-  opts.on("--phone [phone]", "phone") do |phone|
-    options[:phone] = phone
-  end
-
-end.parse!
-
-missing_arguments = []
-missing_arguments << "name" unless options[:name]
-missing_arguments << "zip code" unless options[:zip]
-missing_arguments << "parking type" unless options[:parking]
-missing_arguments << "website" unless options[:website]
-missing_arguments << "phone number" unless options[:phone]
-
-unless missing_arguments.empty?
-  if missing_arguments.length == 1
-    puts "You must provide the #{missing_arguments.last} of the apartment complex."
-  else
-    puts "You must provide the #{missing_arguments[0..-2].join(", ") + " and"} #{missing_arguments.last} of the apartment complex."
-  end
+if error_messages.empty?
+  puts "success"
+else
+  puts error_messages
 end
