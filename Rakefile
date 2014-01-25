@@ -10,13 +10,11 @@ desc "Run tests"
 task :default => :test
 
 task :bootstrap_database do
-  require 'sqlite3'
   database = Environment.database_connection("production")
   create_tables(database)
 end
 
 task :test_prepare do
-  require 'sqlite3'
   File.delete("db/apt_hunter.sqlite3")
   database = Environment.database_connection("test")
   create_tables(database)

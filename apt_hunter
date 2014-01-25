@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require_relative 'lib/environment'
+require_relative 'lib/apt_complex'
 require_relative 'lib/complex_parse_arguments'
 
 command = ARGV[0]
@@ -8,12 +9,9 @@ type = ARGV[1]
 options = ComplexParser.parse
 error_message = ComplexParser.validate(options)
 
-
 if error_message.nil?
-  require "sqlite3"
-  database = Environment.database_connection(options[:environment])
-  statement = "insert into complexes(name, zip, parking, website, phone) values('#{options[:name]}', #{options[:zip]}, '#{options[:parking]}', '#{options[:website]}', '#{options[:phone]}')"
-  database.execute(statement)
+  complex = AptComplex.new(options[:name], options[:zip], options[:parking], options[:website], options[:phone])
+  complex.create
   puts "Complex #{options[:name]} was created."
 else
   puts error_message
