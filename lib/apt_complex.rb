@@ -6,8 +6,8 @@ require_relative 'environment'
 # end
 
 class AptComplex
-  def initialize (name, zip, parking, website, phone)
-    @db = Environment.database_connection('test')
+  def initialize (name, zip, parking, website, phone, environment)
+    @db = Environment.database_connection(environment)
     @name = name
     @zip = zip
     @parking = parking

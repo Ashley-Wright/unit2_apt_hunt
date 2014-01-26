@@ -10,7 +10,7 @@ options = ComplexParser.parse
 error_message = ComplexParser.validate(options)
 
 if error_message.nil?
-  complex = AptComplex.new(options[:name], options[:zip], options[:parking], options[:website], options[:phone])
+  complex = AptComplex.new(options[:name], options[:zip], options[:parking], options[:website], options[:phone], options[:environment])
   complex.create
   puts "Complex #{options[:name]} was created."
 else
