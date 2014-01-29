@@ -5,14 +5,24 @@ require_relative 'lib/complex_parse_arguments'
 
 command = ARGV[0]
 type = ARGV[1]
-
 options = ComplexParser.parse
-error_message = ComplexParser.validate(options)
 
-if error_message.nil?
-  complex = AptComplex.new(options[:name], options[:zip], options[:parking], options[:website], options[:phone], options[:environment])
-  complex.create
-  puts "Complex #{options[:name]} was created."
-else
-  puts error_message
+if command == 'create'
+  error_message = ComplexParser.validate(options)
+
+  if error_message.nil?
+    complex = AptComplex.new(options[:name], options[:zip], options[:parking], options[:website], options[:phone], options[:environment])
+    complex.create
+    puts "Complex #{options[:name]} was created."
+  else
+    puts error_message
+  end
+elsif command == 'view'
+  results = AptComplex.view(options[:environment])
+  results.each do |result|
+    result.each do |item|
+      print "#{item}      "
+    end
+    puts ""
+  end
 end

@@ -1,11 +1,7 @@
 require_relative 'environment'
 
-# class Table
-#   database = Environment.database_connection(options[:environment])
-#   @db = Environment.database_connection('test')
-# end
-
 class AptComplex
+
   def initialize (name, zip, parking, website, phone, environment)
     @db = Environment.database_connection(environment)
     @name = name
@@ -20,4 +16,9 @@ class AptComplex
     @db.execute(statement)
   end
 
+  def self.view (environment)
+    statement = "select name, zip, parking, website, phone from complexes"
+    db = Environment.database_connection(environment)
+    results = db.execute(statement)
+  end
 end
