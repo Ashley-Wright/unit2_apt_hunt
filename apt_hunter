@@ -21,7 +21,7 @@ elsif command == 'view'
   results = AptComplex.view(options[:environment])
   results.each do |result|
     result.each do |item|
-      print "#{item}      "
+      print "#{item}     "
     end
     puts ""
   end
