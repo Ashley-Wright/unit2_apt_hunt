@@ -24,6 +24,15 @@ class ComplexParser
       opts.on("--environment [env]", "environment") do |env|
         options[:environment] = env
       end
+      opts.on("--id [id]", "id") do |id|
+        options[:id] = id
+      end
+      opts.on("--key [key]", "key") do |key|
+        options[:key] = key
+      end
+      opts.on("--value [value]", "value") do |value|
+        options[:value] = value
+      end
     end.parse!
     options
   end
