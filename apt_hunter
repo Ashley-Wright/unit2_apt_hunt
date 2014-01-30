@@ -11,18 +11,12 @@ if command == 'create'
   error_message = ComplexParser.validate(options)
 
   if error_message.nil?
-    complex = AptComplex.new(options[:name], options[:zip], options[:parking], options[:website], options[:phone], options[:environment])
-    complex.create
+    complex = AptComplex.new(name: options[:name], zip: options[:zip], parking: options[:parking], website: options[:website], phone: options[:phone])
+    complex.create (options[:environment])
     puts "Complex #{options[:name]} was created."
   else
     puts error_message
   end
 elsif command == 'view'
-  results = AptComplex.view(options[:environment])
-  results.each do |result|
-    result.each do |item|
-      print "#{item}     "
-    end
-    puts ""
-  end
+  puts AptComplex.view(options[:environment])
 end
