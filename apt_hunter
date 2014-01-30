@@ -7,23 +7,25 @@ command = ARGV[0]
 type = ARGV[1]
 options = ComplexParser.parse
 
+Environment.environment = options[:environment] || "production"
+database = Environment.database_connection
+
 if command == 'create'
   error_message = ComplexParser.validate(options)
 
   if error_message.nil?
-    complex = AptComplex.new(name: options[:name], zip: options[:zip], parking: options[:parking], website: options[:website], phone: options[:phone])
-    complex.create (options[:environment])
+    AptComplex.create(name: options[:name], zip: options[:zip], parking: options[:parking], website: options[:website], phone: options[:phone])
     puts "Complex #{options[:name]} was created."
   else
     puts error_message
   end
 elsif command == 'view'
   puts AptComplex.view(options[:environment])
-elsif command == 'edit'
-  complex = AptComplex.get(options[:environment], options[:id])
-  if complex
-    complex.send("#{options[:key]}=", options[:value])
-    complex.update(options[:environment])
-    puts "Complex #{options[:id]} was updated."
-  end
+# elsif command == 'edit'
+#   complex = AptComplex.get(options[:environment], options[:id])
+#   if complex
+#     complex.send("#{options[:key]}=", options[:value])
+#     complex.update(options[:environment])
+#     puts "Complex #{options[:id]} was updated."
+#   end
 end

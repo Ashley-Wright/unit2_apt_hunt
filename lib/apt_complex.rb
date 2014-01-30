@@ -1,7 +1,8 @@
 require_relative 'environment'
 
 class AptComplex
-  attr_accessor :name, :zip, :parking, :website, :phone, :id
+  attr_accessor :name, :zip, :parking, :website, :phone
+  attr_reader :id
 
   def initialize attributes = {}
     attributes.each_pair do |attribute, value|
@@ -9,11 +10,10 @@ class AptComplex
     end
   end
 
-  def create (environment)
-    statement = "insert into complexes(name, zip, parking, website, phone) values('#{name}', #{zip}, '#{parking}', '#{website}', '#{phone}')"
-    db = Environment.database_connection(environment)
-    db.execute(statement)
-    @id = db.last_insert_row_id
+  def self.create attributes = {}
+    complex = AptComplex.new(attributes)
+    complex.save
+    complex
   end
 
   def update (environment)
@@ -36,11 +36,12 @@ class AptComplex
     return complex
   end
 
-  def save (environment)
-
+  def save
+    db = Environment.database_connection
+    statement = "insert into complexes(name, zip, parking, website, phone) values('#{name}', #{zip}, '#{parking}', '#{website}', '#{phone}')"
+    db.execute(statement)
+    @id = db.last_insert_row_id
   end
-
-
 
   def self.view (environment)
     statement = "select name, zip, parking, website, phone from complexes"
@@ -48,11 +49,20 @@ class AptComplex
     db.results_as_hash = true
     results = db.execute(statement)
     results.map do |row_hash|
-      AptComplex.new(name: row_hash["name"], zip: row_hash["zip"], parking: row_hash["parking"], website: row_hash["website"], phone: row_hash["phone"])
+      complex = AptComplex.new(name: row_hash["name"], zip: row_hash["zip"], parking: row_hash["parking"], website: row_hash["website"], phone: row_hash["phone"])
+      complex.send("id=", row_hash["id"])
+      complex
     end
   end
 
   def to_s
-    "#{name}:   #{zip}   #{parking}   #{website}   #{phone}"
+    "#{name}:   #{zip}   #{parking}   #{website}   #{phone}, id: #{id}"
+  end
+
+
+  protected
+
+  def id=(id)
+    @id = id
   end
 end

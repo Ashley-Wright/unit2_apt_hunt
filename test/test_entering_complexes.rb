@@ -1,5 +1,4 @@
 require_relative 'helper'
-# require 'sqlite3'
 
 class TestEnteringComplexes < AptHuntTest
   def test_error_message_missing_name
