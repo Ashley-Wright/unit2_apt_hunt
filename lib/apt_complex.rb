@@ -16,31 +16,39 @@ class AptComplex
     complex
   end
 
-  def update (environment)
-    db = Environment.database_connection(environment)
-    statement = "update complexes set name='#{name}', zip=#{zip}, parking='#{parking}', website='#{website}', phone='#{phone}' where id=#{id}"
-    db.execute(statement)
+  def update attributes = {}
+    [:name, :zip, :parking, :website, :phone].each do |attr|
+      if attributes[attr]
+        self.send("#{attr}=", attributes[attr])
+      end
+    end
+    save
   end
 
-  def self.get environment, id
-    db = Environment.database_connection(environment)
-    statement = "select id, name, zip, parking, website, phone from complexes where id = #{id}"
+  def self.get id
+    db = Environment.database_connection
+    db.results_as_hash = true
+    statement = "select * from complexes where id = #{id}"
     row = db.get_first_row(statement)
-    complex = AptComplex.new
-    complex.id = row[0]
-    complex.name = row[1]
-    complex.zip = row[2]
-    complex.parking = row[3]
-    complex.website = row[4]
-    complex.phone = row[5]
-    return complex
+    if row
+      complex = AptComplex.new(name: row["name"], zip: row["zip"], parking: row["parking"], website: row["website"], phone: row["phone"])
+      complex.send("id=", row["id"])
+      return complex
+    else
+      nil
+    end
   end
 
   def save
     db = Environment.database_connection
-    statement = "insert into complexes(name, zip, parking, website, phone) values('#{name}', #{zip}, '#{parking}', '#{website}', '#{phone}')"
-    db.execute(statement)
-    @id = db.last_insert_row_id
+    if id
+      statement = "update complexes set name='#{name}', zip=#{zip}, parking='#{parking}', website='#{website}', phone='#{phone}' where id=#{id}"
+      db.execute(statement)
+    else
+      statement = "insert into complexes(name, zip, parking, website, phone) values('#{name}', #{zip}, '#{parking}', '#{website}', '#{phone}')"
+      db.execute(statement)
+      @id = db.last_insert_row_id
+    end
   end
 
   def self.view

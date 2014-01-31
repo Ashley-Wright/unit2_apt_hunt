@@ -21,11 +21,10 @@ if command == 'create'
   end
 elsif command == 'view'
   puts AptComplex.view
-# elsif command == 'edit'
-#   complex = AptComplex.get(options[:environment], options[:id])
-#   if complex
-#     complex.send("#{options[:key]}=", options[:value])
-#     complex.update(options[:environment])
-#     puts "Complex #{options[:id]} was updated."
-#   end
+elsif command == "edit"
+  if complex = AptComplex.get(options[:id])
+    complex.update(options)
+    puts "Complex #{complex.id} was updated."
+    puts complex.to_s
+  end
 end
