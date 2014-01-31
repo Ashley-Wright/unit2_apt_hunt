@@ -26,5 +26,7 @@ elsif command == "edit"
     complex.update(options)
     puts "Complex #{complex.id} was updated."
     puts complex.to_s
+  else
+    puts "Complex #{options[:id]} does not exist."
   end
 end
