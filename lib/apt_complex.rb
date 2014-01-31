@@ -17,14 +17,14 @@ class AptComplex
   end
 
   def update (environment)
-    statement = "update complexes set name='#{name}', zip=#{zip}, parking='#{parking}', website='#{website}', phone='#{phone}' where id=#{id}"
     db = Environment.database_connection(environment)
+    statement = "update complexes set name='#{name}', zip=#{zip}, parking='#{parking}', website='#{website}', phone='#{phone}' where id=#{id}"
     db.execute(statement)
   end
 
   def self.get environment, id
-    statement = "select id, name, zip, parking, website, phone from complexes where id = #{id}"
     db = Environment.database_connection(environment)
+    statement = "select id, name, zip, parking, website, phone from complexes where id = #{id}"
     row = db.get_first_row(statement)
     complex = AptComplex.new
     complex.id = row[0]
@@ -43,10 +43,10 @@ class AptComplex
     @id = db.last_insert_row_id
   end
 
-  def self.view (environment)
-    statement = "select name, zip, parking, website, phone from complexes"
-    db = Environment.database_connection(environment)
+  def self.view
+    db = Environment.database_connection
     db.results_as_hash = true
+    statement = "select * from complexes order by name ASC"
     results = db.execute(statement)
     results.map do |row_hash|
       complex = AptComplex.new(name: row_hash["name"], zip: row_hash["zip"], parking: row_hash["parking"], website: row_hash["website"], phone: row_hash["phone"])
@@ -56,7 +56,7 @@ class AptComplex
   end
 
   def to_s
-    "#{name}:   #{zip}   #{parking}   #{website}   #{phone}, id: #{id}"
+    "#{name}   #{id}   #{zip}   #{parking}   #{website}   #{phone}"
   end
 
 

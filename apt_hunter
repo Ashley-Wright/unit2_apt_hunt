@@ -20,7 +20,7 @@ if command == 'create'
     puts error_message
   end
 elsif command == 'view'
-  puts AptComplex.view(options[:environment])
+  puts AptComplex.view
 # elsif command == 'edit'
 #   complex = AptComplex.get(options[:environment], options[:id])
 #   if complex
