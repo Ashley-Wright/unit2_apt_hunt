@@ -1,5 +1,5 @@
 require_relative 'helper'
-require_relative '../lib/apt_complex'
+require_relative '../models/apt_complex'
 
 class TestUpdatingComplexes < AptHuntTest
 

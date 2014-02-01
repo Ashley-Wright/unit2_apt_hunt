@@ -1,5 +1,5 @@
 require_relative 'database'
-require_relative '../lib/apt_complex'
+require_relative '../models/apt_complex'
 require 'logger'
 
 class Environment

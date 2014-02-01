@@ -1,4 +1,4 @@
-require_relative 'environment'
+require_relative '../lib/environment'
 
 class AptComplex
   attr_accessor :name, :zip, :parking, :website, :phone

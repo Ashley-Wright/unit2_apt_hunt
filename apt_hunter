@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 require_relative 'lib/environment'
-require_relative 'lib/apt_complex'
+require_relative 'models/apt_complex'
 require_relative 'lib/complex_parse_arguments'
-
 
 class ApartmentHunter
   attr_reader :options
@@ -10,14 +9,19 @@ class ApartmentHunter
   def initialize
     @options = ComplexParser.parse
     @options[:command] = ARGV[0]
-    @options[:type] = ARGV[1]
+    @options[:table] = ARGV[1]
     Environment.environment = @options[:environment] || "production"
   end
 
   def main
     database = Environment.database_connection
+    if options[:table] == 'complex'
+      self.complex
+    end
+  end
 
-    if @options[:command] == 'create'
+  def complex
+    if options[:command] == 'create'
       error_message = ComplexParser.validate(options)
 
       if error_message.nil?
@@ -26,9 +30,9 @@ class ApartmentHunter
       else
         puts error_message
       end
-    elsif @options[:command] == 'view'
+    elsif options[:command] == 'view'
       puts AptComplex.view
-    elsif @options[:command] == "edit"
+    elsif options[:command] == "edit"
       if complex = AptComplex.get(options[:id])
         complex.update(options)
         puts "Complex #{complex.id} was updated."
