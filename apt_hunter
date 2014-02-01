@@ -3,30 +3,38 @@ require_relative 'lib/environment'
 require_relative 'lib/apt_complex'
 require_relative 'lib/complex_parse_arguments'
 
-command = ARGV[0]
-type = ARGV[1]
-options = ComplexParser.parse
 
-Environment.environment = options[:environment] || "production"
-database = Environment.database_connection
+class ApartmentHunter
+  def main
+    command = ARGV[0]
+    type = ARGV[1]
+    options = ComplexParser.parse
 
-if command == 'create'
-  error_message = ComplexParser.validate(options)
+    Environment.environment = options[:environment] || "production"
+    database = Environment.database_connection
 
-  if error_message.nil?
-    AptComplex.create(name: options[:name], zip: options[:zip], parking: options[:parking], website: options[:website], phone: options[:phone])
-    puts "Complex #{options[:name]} was created."
-  else
-    puts error_message
-  end
-elsif command == 'view'
-  puts AptComplex.view
-elsif command == "edit"
-  if complex = AptComplex.get(options[:id])
-    complex.update(options)
-    puts "Complex #{complex.id} was updated."
-    puts complex.to_s
-  else
-    puts "Complex #{options[:id]} does not exist."
+    if command == 'create'
+      error_message = ComplexParser.validate(options)
+
+      if error_message.nil?
+        AptComplex.create(name: options[:name], zip: options[:zip], parking: options[:parking], website: options[:website], phone: options[:phone])
+        puts "Complex #{options[:name]} was created."
+      else
+        puts error_message
+      end
+    elsif command == 'view'
+      puts AptComplex.view
+    elsif command == "edit"
+      if complex = AptComplex.get(options[:id])
+        complex.update(options)
+        puts "Complex #{complex.id} was updated."
+        puts complex.to_s
+      else
+        puts "Complex #{options[:id]} does not exist."
+      end
+    end
   end
 end
+
+apartmenthunter = ApartmentHunter.new()
+apartmenthunter.main()
