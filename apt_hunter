@@ -5,15 +5,19 @@ require_relative 'lib/complex_parse_arguments'
 
 
 class ApartmentHunter
-  def main
-    command = ARGV[0]
-    type = ARGV[1]
-    options = ComplexParser.parse
+  attr_reader :options
 
-    Environment.environment = options[:environment] || "production"
+  def initialize
+    @options = ComplexParser.parse
+    @options[:command] = ARGV[0]
+    @options[:type] = ARGV[1]
+    Environment.environment = @options[:environment] || "production"
+  end
+
+  def main
     database = Environment.database_connection
 
-    if command == 'create'
+    if @options[:command] == 'create'
       error_message = ComplexParser.validate(options)
 
       if error_message.nil?
@@ -22,9 +26,9 @@ class ApartmentHunter
       else
         puts error_message
       end
-    elsif command == 'view'
+    elsif @options[:command] == 'view'
       puts AptComplex.view
-    elsif command == "edit"
+    elsif @options[:command] == "edit"
       if complex = AptComplex.get(options[:id])
         complex.update(options)
         puts "Complex #{complex.id} was updated."
