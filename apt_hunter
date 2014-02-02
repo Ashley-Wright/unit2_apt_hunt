@@ -17,6 +17,8 @@ class ApartmentHunter
     database = Environment.database_connection
     if options[:table] == 'complex'
       self.complex
+    elsif options[:table] == 'apartment'
+      self.apartment
     end
   end
 
