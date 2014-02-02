@@ -24,7 +24,7 @@ class ApartmentHunter
 
   def complex
     if options[:command] == 'create'
-      error_message = Parser.validate(options)
+      error_message = AptComplex.validate(options)
 
       if error_message.nil?
         AptComplex.create(name: options[:name], zip: options[:zip], parking: options[:parking], website: options[:website], phone: options[:phone])
