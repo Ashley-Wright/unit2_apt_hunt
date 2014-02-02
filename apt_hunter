@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 require_relative 'lib/environment'
 require_relative 'models/apt_complex'
-require_relative 'lib/complex_parse_arguments'
+require_relative 'lib/argument_parser'
 
 class ApartmentHunter
   attr_reader :options
 
   def initialize
-    @options = ComplexParser.parse
+    @options = Parser.parse
     @options[:command] = ARGV[0]
     @options[:table] = ARGV[1]
     Environment.environment = @options[:environment] || "production"
@@ -24,7 +24,7 @@ class ApartmentHunter
 
   def complex
     if options[:command] == 'create'
-      error_message = ComplexParser.validate(options)
+      error_message = Parser.validate(options)
 
       if error_message.nil?
         AptComplex.create(name: options[:name], zip: options[:zip], parking: options[:parking], website: options[:website], phone: options[:phone])

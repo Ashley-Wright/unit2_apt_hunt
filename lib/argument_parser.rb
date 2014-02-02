@@ -1,6 +1,6 @@
 require 'optparse'
 
-class ComplexParser
+class Parser
   def self.parse
     options = {environment: "production"}
     OptionParser.new do |opts|
