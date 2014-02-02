@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require_relative 'lib/environment'
 require_relative 'models/apt_complex'
+require_relative 'models/apartment'
 require_relative 'lib/argument_parser'
 
 class ApartmentHunter
@@ -44,6 +45,14 @@ class ApartmentHunter
       end
     end
   end
+
+  def apartment
+    if options[:command] == 'create'
+      Apartment.create(rent: options[:rent], size: options[:size], bedrooms: options[:bedrooms], bathrooms: options[:bathrooms])
+      puts "Apartment was created."
+    end
+  end
+
 end
 
 apartmenthunter = ApartmentHunter.new()

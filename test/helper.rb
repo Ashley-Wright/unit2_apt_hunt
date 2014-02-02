@@ -12,6 +12,7 @@ class AptHuntTest < MiniTest::Unit::TestCase
 
   def teardown
     database.execute("delete from complexes")
+    database.execute("delete from apartments")
   end
 
   def assert_command_output expected, command
