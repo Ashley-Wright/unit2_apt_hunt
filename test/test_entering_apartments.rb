@@ -24,4 +24,34 @@ EOS
     assert_equal expected, shell_output
   end
 
+  def test_error_message_missing_rent
+    command = "./apt_hunter create apartment"
+    expected = "You must provide the rent, size, number of bedrooms, number of bathrooms and name of apartment complex."
+    assert_command_output expected, command
+  end
+
+  def test_error_message_missing_size
+    command = "./apt_hunter create apartment --rent 847.96"
+    expected = "You must provide the size, number of bedrooms, number of bathrooms and name of apartment complex."
+    assert_command_output expected, command
+  end
+
+  def test_error_message_missing_bedrooms
+    command = "./apt_hunter create apartment --rent 847.96 --size 1157"
+    expected = "You must provide the number of bedrooms, number of bathrooms and name of apartment complex."
+    assert_command_output expected, command
+  end
+
+  def test_error_message_missing_bathrooms
+    command = "./apt_hunter create apartment --rent 847.96 --size 1157 --bedrooms 2"
+    expected = "You must provide the number of bathrooms and name of apartment complex."
+    assert_command_output expected, command
+  end
+
+  def test_error_message_missing_complex
+    command = "./apt_hunter create apartment --rent 847.96 --size 1157 --bedrooms 2 --bathrooms 1.5"
+    expected = "You must provide the name of apartment complex."
+    assert_command_output expected, command
+  end
+
 end

@@ -37,5 +37,23 @@ class Apartment
     "$#{rent}   #{size}   #{bedrooms}   #{bathrooms}   #{complex_name[0][0]}"
   end
 
+  def self.validate options
+    missing_arguments = []
+    missing_arguments << "rent" unless options[:rent]
+    missing_arguments << "size" unless options[:size]
+    missing_arguments << "number of bedrooms" unless options[:bedrooms]
+    missing_arguments << "number of bathrooms" unless options[:bathrooms]
+    missing_arguments << "name of apartment complex" unless options[:complex]
+
+    unless missing_arguments.empty?
+      if missing_arguments.length == 1
+        error = "You must provide the #{missing_arguments.last}."
+      else
+        error = "You must provide the #{missing_arguments[0..-2].join(", ") + " and"} #{missing_arguments.last}."
+      end
+      error
+    end
+  end
+
 end
 
