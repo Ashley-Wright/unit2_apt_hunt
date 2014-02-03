@@ -62,6 +62,8 @@ class ApartmentHunter
       else
         puts error_message
       end
+    elsif options[:command] == 'view'
+      puts Apartment.view
     end
   end
 

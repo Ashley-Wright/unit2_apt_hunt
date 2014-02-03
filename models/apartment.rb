@@ -30,6 +30,30 @@ class Apartment
     complex_id
   end
 
+  # def self.view
+  #   db = Environment.database_connection
+  #   db.results_as_hash = true
+  #   statement = "select apartments.*, complexes.* from apartments inner join complexes on apartments.complex_id = complexes.id order by complexes.name asc"
+  #   results = db.execute(statement)
+  #   results.map do |row_hash|
+  #     apartment = Apartment.new(rent: row_hash["apartment.rent"], size: row_hash["apartment.size"], bedrooms: row_hash["apartment.bedrooms"], bathrooms: row_hash["apartment.bathrooms"], complex_id: row_hash["apartment.complex_id"])
+  #     apartment.send("id=", row_hash["apartment.id"])
+  #     apartment
+  #   end
+  # end
+
+  def self.view
+    db = Environment.database_connection
+    db.results_as_hash = true
+    statement = "select apartments.* from apartments"
+    results = db.execute(statement)
+    results.map do |row_hash|
+      apartment = Apartment.new(rent: row_hash["rent"], size: row_hash["size"], bedrooms: row_hash["bedrooms"], bathrooms: row_hash["bathrooms"], complex_id: row_hash["complex_id"])
+      apartment.send("id=", row_hash["id"])
+      apartment
+    end
+  end
+
   def to_s
     db = Environment.database_connection
     statement = "select name from complexes where id= '#{complex_id}'"
@@ -53,6 +77,13 @@ class Apartment
       end
       error
     end
+  end
+
+
+  protected
+
+  def id=(id)
+    @id = id
   end
 
 end
