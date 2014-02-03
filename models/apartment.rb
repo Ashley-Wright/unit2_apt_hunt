@@ -27,7 +27,7 @@ class Apartment
     db = Environment.database_connection
     statement = "select id from complexes where name= '#{complex_name}'"
     complex_id = db.execute(statement)
-    complex_id[0][0]
+    complex_id
   end
 
   def to_s

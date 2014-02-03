@@ -54,4 +54,27 @@ EOS
     assert_command_output expected, command
   end
 
+  def test_error_message_nonexistant_complex
+    complex1 = AptComplex.create(name: "Garden Terrace", zip: 37075, parking: "garage", website: "www.gardenterrace.com", phone: "555-555-5555")
+    complex2 = AptComplex.create(name: "Oak Village", zip: 37075, parking: "garage", website: "www.oakvillage.com", phone: "555-555-5555")
+    shell_output = `./apt_hunter create apartment --rent 983.57 --size 1474 --bedrooms 3 --bathrooms 1.5 --complex 'Eagle Point' --environment test`
+
+    expected = <<EOS
+Eagle Point complex does not exist.
+EOS
+    assert_equal expected, shell_output
+  end
+
+  def test_invalid_apartment_not_saved_missing_arguments
+    `./apt_hunter create apartment --environment test`
+    result = database.execute("select count(id) from apartments")
+    assert_equal 0, result[0][0]
+  end
+
+  def test_invalid_apartment_not_saved_bad_complex
+    `./apt_hunter create apartment --rent 983.57 --size 1474 --bedrooms 3 --bathrooms 1.5 --complex 'Garden Terrace' --environment test`
+    result = database.execute("select count(id) from apartments")
+    assert_equal 0, result[0][0]
+  end
+
 end
