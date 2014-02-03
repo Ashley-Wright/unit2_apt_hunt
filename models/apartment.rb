@@ -23,11 +23,18 @@ class Apartment
     @id = db.last_insert_row_id
   end
 
-  def self.get_complex complex_name
+  def self.get_complex_id complex_name
     db = Environment.database_connection
     statement = "select id from complexes where name= '#{complex_name}'"
     complex_id = db.execute(statement)
     complex_id[0][0]
+  end
+
+  def to_s
+    db = Environment.database_connection
+    statement = "select name from complexes where id= '#{complex_id}'"
+    complex_name = db.execute(statement)
+    "$#{rent}   #{size}   #{bedrooms}   #{bathrooms}   #{complex_name[0][0]}"
   end
 
 end

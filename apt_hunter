@@ -48,9 +48,10 @@ class ApartmentHunter
 
   def apartment
     if options[:command] == 'create'
-      options[:complex_id] = Apartment.get_complex(options[:complex])
-      Apartment.create(rent: options[:rent], size: options[:size], bedrooms: options[:bedrooms], bathrooms: options[:bathrooms], complex_id: options[:complex_id])
+      options[:complex_id] = Apartment.get_complex_id(options[:complex])
+      apartment = Apartment.create(rent: options[:rent], size: options[:size], bedrooms: options[:bedrooms], bathrooms: options[:bathrooms], complex_id: options[:complex_id])
       puts "Apartment was created."
+      puts apartment.to_s
     end
   end
 
