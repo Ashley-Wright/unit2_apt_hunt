@@ -42,6 +42,12 @@ class Parser
       opts.on("--complex [complex]", "complex") do |complex|
         options[:complex] = complex
       end
+      opts.on("--min [min]", "min") do |min|
+        options[:min] = min
+      end
+      opts.on("--max [max]", "max") do |max|
+        options[:max] = max
+      end
     end.parse!
     options
   end

@@ -36,16 +36,34 @@ class Apartment
   #   statement = "select apartments.*, complexes.* from apartments inner join complexes on apartments.complex_id = complexes.id order by complexes.name asc"
   #   results = db.execute(statement)
   #   results.map do |row_hash|
-  #     apartment = Apartment.new(rent: row_hash["apartment.rent"], size: row_hash["apartment.size"], bedrooms: row_hash["apartment.bedrooms"], bathrooms: row_hash["apartment.bathrooms"], complex_id: row_hash["apartment.complex_id"])
-  #     apartment.send("id=", row_hash["apartment.id"])
+  #     apartment = Apartment.new(rent: row_hash["apartments.rent"], size: row_hash["apartments.size"], bedrooms: row_hash["apartments.bedrooms"], bathrooms: row_hash["apartments.bathrooms"], complex_id: row_hash["apartments.complex_id"])
+  #     apartment.send("id=", row_hash["apartments.id"])
   #     apartment
   #   end
   # end
 
-  def self.view
+  # def self.view
+  #   db = Environment.database_connection
+  #   db.results_as_hash = true
+  #   statement = "select apartments.* from apartments"
+  #   results = db.execute(statement)
+  #   results.map do |row_hash|
+  #     apartment = Apartment.new(rent: row_hash["rent"], size: row_hash["size"], bedrooms: row_hash["bedrooms"], bathrooms: row_hash["bathrooms"], complex_id: row_hash["complex_id"])
+  #     complex = Complex.get(row_hash["complex_id"])
+  #     apartment.complex = complex
+  #     apartment.send("id=", row_hash["id"])
+  #     apartment
+  #   end
+  # end
+
+  def self.view(min = nil, max = nil)
     db = Environment.database_connection
     db.results_as_hash = true
-    statement = "select apartments.* from apartments"
+    if min || max
+      statement = "select apartments.* from apartments where rent between #{min} and #{max}"
+    else
+      statement = "select apartments.* from apartments"
+    end
     results = db.execute(statement)
     results.map do |row_hash|
       apartment = Apartment.new(rent: row_hash["rent"], size: row_hash["size"], bedrooms: row_hash["bedrooms"], bathrooms: row_hash["bathrooms"], complex_id: row_hash["complex_id"])
