@@ -39,6 +39,9 @@ class Parser
       opts.on("--bathrooms [bathrooms]", "bathrooms") do |bathrooms|
         options[:bathrooms] = bathrooms
       end
+      opts.on("--complex [complex]", "complex") do |complex|
+        options[:complex] = complex
+      end
     end.parse!
     options
   end

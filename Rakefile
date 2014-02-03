@@ -24,5 +24,5 @@ end
 
 def create_tables(database_connection)
   database_connection.execute("CREATE TABLE complexes (id INTEGER PRIMARY KEY AUTOINCREMENT, name varchar(50), zip integer, parking varchar(15), website varchar(50), phone varchar(14))")
-  database_connection.execute("CREATE TABLE apartments (id INTEGER PRIMARY KEY AUTOINCREMENT, rent decimal(7,2), size integer, bedrooms integer, bathrooms decimal(2,2))")
+  database_connection.execute("CREATE TABLE apartments (id INTEGER PRIMARY KEY AUTOINCREMENT, rent decimal(7,2), size integer, bedrooms integer, bathrooms decimal(2,2), complex_id integer)")
 end
