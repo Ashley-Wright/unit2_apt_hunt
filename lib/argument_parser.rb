@@ -48,6 +48,9 @@ class Parser
       opts.on("--max [max]", "max") do |max|
         options[:max] = max
       end
+      opts.on("--sort [sort]", "sort") do |sort|
+        options[:sort] = sort
+      end
     end.parse!
     options
   end

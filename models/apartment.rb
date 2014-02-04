@@ -30,14 +30,22 @@ class Apartment
     complex_id
   end
 
-  def self.view(min = nil, max = nil)
+  def self.view(min = nil, max = nil, sort = nil)
     db = Environment.database_connection
     db.results_as_hash = true
-    if min || max
-      statement = "select apartments.*, complexes.* from apartments inner join complexes on apartments.complex_id = complexes.id where rent between #{min} and #{max} order by complexes.name asc"
+
+    if sort
+      sort_by = sort + ' desc'
     else
-      statement = "select apartments.*, complexes.* from apartments inner join complexes on apartments.complex_id = complexes.id order by complexes.name asc"
+      sort_by = 'complexes.name'
     end
+
+    if min || max
+      statement = "select apartments.*, complexes.* from apartments inner join complexes on apartments.complex_id = complexes.id where rent between #{min} and #{max} order by #{sort_by}"
+    else
+      statement = "select apartments.*, complexes.* from apartments inner join complexes on apartments.complex_id = complexes.id order by #{sort_by}"
+    end
+
     results = db.execute(statement)
     results.map do |row_hash|
       apartment = Apartment.new(rent: row_hash["rent"], size: row_hash["size"], bedrooms: row_hash["bedrooms"], bathrooms: row_hash["bathrooms"], complex_id: row_hash["complex_id"])

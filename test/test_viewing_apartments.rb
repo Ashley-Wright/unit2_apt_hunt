@@ -21,4 +21,5 @@ $983.57   1474   3   1.5   Oak Village
 EOS
   assert_equal expected, shell_output
   end
+
 end
