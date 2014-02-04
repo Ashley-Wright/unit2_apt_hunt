@@ -67,7 +67,7 @@ class ApartmentHunter
       puts Apartment.view
 
     elsif options[:command] == 'filter'
-      puts Apartment.view(options[:min], options[:max], options[:sort])
+      puts Apartment.filter(options[:min], options[:max], options[:sort])
     end
   end
 

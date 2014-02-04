@@ -1,7 +1,7 @@
 require_relative '../lib/environment'
 
 class Apartment
-  attr_accessor :rent, :size, :bedrooms, :bathrooms, :complex_id
+  attr_accessor :rent, :size, :bedrooms, :bathrooms, :complex_id, :price_per_sqft
   attr_reader :id
 
   def initialize attributes = {}
@@ -30,7 +30,22 @@ class Apartment
     complex_id
   end
 
-  def self.view(min = nil, max = nil, sort = nil)
+  def self.view
+    db = Environment.database_connection
+    db.results_as_hash = true
+    sort_by = 'complexes.name'
+    statement = "select apartments.*, complexes.* from apartments inner join complexes on apartments.complex_id = complexes.id order by #{sort_by}"
+
+    results = db.execute(statement)
+    results.map do |row_hash|
+      price_per = row_hash["rent"] / row_hash["size"]
+      apartment = Apartment.new(rent: row_hash["rent"], size: row_hash["size"], bedrooms: row_hash["bedrooms"], bathrooms: row_hash["bathrooms"], price_per_sqft: price_per, complex_id: row_hash["complex_id"])
+      apartment.send("id=", row_hash["id"])
+      apartment
+    end
+  end
+
+  def self.filter(min, max, sort = nil)
     db = Environment.database_connection
     db.results_as_hash = true
 
@@ -40,15 +55,12 @@ class Apartment
       sort_by = 'complexes.name'
     end
 
-    if min || max
-      statement = "select apartments.*, complexes.* from apartments inner join complexes on apartments.complex_id = complexes.id where rent between #{min} and #{max} order by #{sort_by}"
-    else
-      statement = "select apartments.*, complexes.* from apartments inner join complexes on apartments.complex_id = complexes.id order by #{sort_by}"
-    end
+    statement = "select apartments.*, complexes.* from apartments inner join complexes on apartments.complex_id = complexes.id where rent between #{min} and #{max} order by #{sort_by}"
 
     results = db.execute(statement)
     results.map do |row_hash|
-      apartment = Apartment.new(rent: row_hash["rent"], size: row_hash["size"], bedrooms: row_hash["bedrooms"], bathrooms: row_hash["bathrooms"], complex_id: row_hash["complex_id"])
+      price_per = row_hash["rent"] / row_hash["size"]
+      apartment = Apartment.new(rent: row_hash["rent"], size: row_hash["size"], bedrooms: row_hash["bedrooms"], bathrooms: row_hash["bathrooms"], price_per_sqft: price_per, complex_id: row_hash["complex_id"])
       apartment.send("id=", row_hash["id"])
       apartment
     end
@@ -58,7 +70,12 @@ class Apartment
     db = Environment.database_connection
     statement = "select name from complexes where id= '#{complex_id}'"
     complex_name = db.execute(statement)
-    "$#{rent}   #{size}   #{bedrooms}   #{bathrooms}   #{complex_name[0][0]}"
+    if price_per_sqft
+      price_per = sprintf "%.3f", price_per_sqft
+      "$#{rent}   #{size}   #{price_per}   #{bedrooms}   #{bathrooms}   #{complex_name[0][0]}"
+    else
+      "$#{rent}   #{size}   #{bedrooms}   #{bathrooms}   #{complex_name[0][0]}"
+    end
   end
 
   def self.validate options

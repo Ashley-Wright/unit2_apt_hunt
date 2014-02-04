@@ -11,8 +11,8 @@ class TestFilteringApartments < AptHuntTest
 
     shell_output = `./apt_hunter filter apartment --min 900 --max 1000 --environment test`
     expected = <<EOS
-$983.57   1474   3   1.5   Garden Terrace
-$953.57   1474   3   1.5   Garden Terrace
+$983.57   1474   0.667   3   1.5   Garden Terrace
+$953.57   1474   0.647   3   1.5   Garden Terrace
 EOS
   assert_equal expected, shell_output
   end
@@ -27,8 +27,8 @@ EOS
 
     shell_output = `./apt_hunter filter apartment --min 900 --max 1000 --sort bedrooms --environment test`
     expected = <<EOS
-$953.57   1474   3   1.5   Garden Terrace
-$983.57   1474   2   1.5   Garden Terrace
+$953.57   1474   0.647   3   1.5   Garden Terrace
+$983.57   1474   0.667   2   1.5   Garden Terrace
 EOS
   assert_equal expected, shell_output
   end
