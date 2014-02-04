@@ -63,6 +63,15 @@ class ApartmentHunter
         puts error_message
       end
 
+    elsif options[:command] == 'edit'
+      if apartment = Apartment.get(options[:id])
+        apartment.update(options)
+        puts "Apartment #{options[:id]} was updated."
+        puts apartment.to_s
+      else
+        puts "Apartment #{options[:id]} does not exist."
+      end
+
     elsif options[:command] == 'view'
       puts Apartment.view
 

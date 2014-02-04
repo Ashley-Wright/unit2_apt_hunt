@@ -16,11 +16,34 @@ class Apartment
     apartment
   end
 
+  def update attributes = {}
+    [:rent, :size, :bedrooms, :bathrooms, :complex_id].each do |attr|
+      if attributes[attr]
+        self.send("#{attr}=", attributes[attr])
+      end
+    end
+    save
+  end
+
   def save
     db = Environment.database_connection
     statement = "insert into apartments(rent, size, bedrooms, bathrooms, complex_id) values(#{rent}, #{size}, #{bedrooms}, #{bathrooms}, #{complex_id})"
     db.execute(statement)
     @id = db.last_insert_row_id
+  end
+
+  def self.get id
+    db = Environment.database_connection
+    db.results_as_hash = true
+    statement = "select * from apartments where id = #{id}"
+    row = db.get_first_row(statement)
+    if row
+      apartment = Apartment.new(rent: row["rent"], size: row["size"], bedrooms: row["bedrooms"], bathrooms: row["bathrooms"], complex_id: row["complex_id"])
+      apartment.send("id=", row["id"])
+      apartment
+    else
+      nil
+    end
   end
 
   def self.get_complex_id complex_name
@@ -34,7 +57,7 @@ class Apartment
     db = Environment.database_connection
     db.results_as_hash = true
     sort_by = 'complexes.name'
-    statement = "select apartments.*, complexes.* from apartments inner join complexes on apartments.complex_id = complexes.id order by #{sort_by}"
+    statement = "select apartments.id, apartments.rent, apartments.size, apartments.bedrooms, apartments.bathrooms, apartments.complex_id, complexes.name from apartments inner join complexes on apartments.complex_id = complexes.id order by #{sort_by}"
 
     results = db.execute(statement)
     results.map do |row_hash|
@@ -55,7 +78,7 @@ class Apartment
       sort_by = 'complexes.name'
     end
 
-    statement = "select apartments.*, complexes.* from apartments inner join complexes on apartments.complex_id = complexes.id where rent between #{min} and #{max} order by #{sort_by}"
+    statement = "select apartments.id, apartments.rent, apartments.size, apartments.bedrooms, apartments.bathrooms, apartments.complex_id, complexes.name from apartments inner join complexes on apartments.complex_id = complexes.id where rent between #{min} and #{max} order by #{sort_by}"
 
     results = db.execute(statement)
     results.map do |row_hash|
@@ -72,7 +95,7 @@ class Apartment
     complex_name = db.execute(statement)
     if price_per_sqft
       price_per = sprintf "%.3f", price_per_sqft
-      "$#{rent}   #{size}   #{price_per}   #{bedrooms}   #{bathrooms}   #{complex_name[0][0]}"
+      "#{id}   $#{rent}   #{size}   #{price_per}   #{bedrooms}   #{bathrooms}   #{complex_name[0][0]}"
     else
       "$#{rent}   #{size}   #{bedrooms}   #{bathrooms}   #{complex_name[0][0]}"
     end
