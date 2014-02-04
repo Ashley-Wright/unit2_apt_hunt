@@ -27,9 +27,14 @@ class Apartment
 
   def save
     db = Environment.database_connection
-    statement = "insert into apartments(rent, size, bedrooms, bathrooms, complex_id) values(#{rent}, #{size}, #{bedrooms}, #{bathrooms}, #{complex_id})"
-    db.execute(statement)
-    @id = db.last_insert_row_id
+    if id
+      statement = "update apartments set rent=#{rent}, size=#{size}, bedrooms=#{bedrooms}, bathrooms=#{bathrooms}, complex_id=#{complex_id} where id=#{id}"
+      db.execute(statement)
+    else
+      statement = "insert into apartments(rent, size, bedrooms, bathrooms, complex_id) values(#{rent}, #{size}, #{bedrooms}, #{bathrooms}, #{complex_id})"
+      db.execute(statement)
+      @id = db.last_insert_row_id
+    end
   end
 
   def self.get id
