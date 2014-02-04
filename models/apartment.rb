@@ -101,6 +101,12 @@ class Apartment
     end
   end
 
+  def self.delete id
+    db = Environment.database_connection
+    statement = "delete from apartments where id = #{id}"
+    db.execute(statement)
+  end
+
   def self.validate options
     missing_arguments = []
     missing_arguments << "rent" unless options[:rent]

@@ -72,6 +72,10 @@ class ApartmentHunter
         puts "Apartment #{options[:id]} does not exist."
       end
 
+    elsif options[:command] == 'delete'
+      Apartment.delete(options[:id])
+      puts "Apartment #{options[:id]} was deleted."
+
     elsif options[:command] == 'view'
       puts Apartment.view
 
