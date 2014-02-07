@@ -13,8 +13,8 @@ class TestDeletingApartments < AptHuntTest
     result = database.execute("select * from apartments where id = #{apartment2.id}")
     assert_equal [], result
 
-    results = database.execute("select count(id) from apartments")
-    assert_equal 2, results[0][0]
+    results = Apartment.count
+    assert_equal 2, results
   end
 
 end

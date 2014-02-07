@@ -16,7 +16,7 @@ EOS
   end
 
   def test_viewing_complexes_empty_table
-    results = database.execute("select name, zip, parking, website, phone from complexes")
+    results = database.execute("select name, zip, parking, website, phone from apartmentcomplexes")
     assert_equal [], results
   end
 end

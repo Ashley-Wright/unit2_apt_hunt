@@ -28,7 +28,7 @@ class ApartmentComplex
   def self.get id
     db = Environment.database_connection
     db.results_as_hash = true
-    statement = "select * from complexes where id = #{id}"
+    statement = "select * from apartmentcomplexes where id = #{id}"
     row = db.get_first_row(statement)
     if row
       complex = ApartmentComplex.new(name: row["name"], zip: row["zip"], parking: row["parking"], website: row["website"], phone: row["phone"])
@@ -42,10 +42,10 @@ class ApartmentComplex
   def save
     db = Environment.database_connection
     if id
-      statement = "update complexes set name='#{name}', zip=#{zip}, parking='#{parking}', website='#{website}', phone='#{phone}' where id=#{id}"
+      statement = "update apartmentcomplexes set name='#{name}', zip=#{zip}, parking='#{parking}', website='#{website}', phone='#{phone}' where id=#{id}"
       db.execute(statement)
     else
-      statement = "insert into complexes(name, zip, parking, website, phone) values('#{name}', #{zip}, '#{parking}', '#{website}', '#{phone}')"
+      statement = "insert into apartmentcomplexes(name, zip, parking, website, phone) values('#{name}', #{zip}, '#{parking}', '#{website}', '#{phone}')"
       db.execute(statement)
       @id = db.last_insert_row_id
     end
@@ -54,13 +54,18 @@ class ApartmentComplex
   def self.view
     db = Environment.database_connection
     db.results_as_hash = true
-    statement = "select * from complexes order by name ASC"
+    statement = "select * from apartmentcomplexes order by name ASC"
     results = db.execute(statement)
     results.map do |row_hash|
       complex = ApartmentComplex.new(name: row_hash["name"], zip: row_hash["zip"], parking: row_hash["parking"], website: row_hash["website"], phone: row_hash["phone"])
       complex.send("id=", row_hash["id"])
       complex
     end
+  end
+
+  def self.count
+    db = Environment.database_connection
+    db.execute("select count(id) from apartmentcomplexes")[0][0]
   end
 
   def to_s

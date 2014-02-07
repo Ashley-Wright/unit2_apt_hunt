@@ -53,7 +53,7 @@ class Apartment
 
   def self.get_apartmentcomplex_id complex_name
     db = Environment.database_connection
-    statement = "select id from complexes where name= '#{complex_name}'"
+    statement = "select id from apartmentcomplexes where name= '#{complex_name}'"
     apartmentcomplex_id = db.execute(statement)
     apartmentcomplex_id
   end
@@ -61,8 +61,8 @@ class Apartment
   def self.view
     db = Environment.database_connection
     db.results_as_hash = true
-    sort_by = 'complexes.name'
-    statement = "select apartments.id, apartments.rent, apartments.size, apartments.bedrooms, apartments.bathrooms, apartments.apartmentcomplex_id, complexes.name from apartments inner join complexes on apartments.apartmentcomplex_id = complexes.id order by #{sort_by}"
+    sort_by = 'apartmentcomplexes.name'
+    statement = "select apartments.id, apartments.rent, apartments.size, apartments.bedrooms, apartments.bathrooms, apartments.apartmentcomplex_id, apartmentcomplexes.name from apartments inner join apartmentcomplexes on apartments.apartmentcomplex_id = apartmentcomplexes.id order by #{sort_by}"
 
     results = db.execute(statement)
     results.map do |row_hash|
@@ -73,6 +73,11 @@ class Apartment
     end
   end
 
+  def self.count
+    db = Environment.database_connection
+    db.execute("select count(id) from apartments")[0][0]
+  end
+
   def self.filter(min, max, sort = nil)
     db = Environment.database_connection
     db.results_as_hash = true
@@ -80,10 +85,10 @@ class Apartment
     if sort
       sort_by = sort + ' desc'
     else
-      sort_by = 'complexes.name'
+      sort_by = 'apartmentcomplexes.name'
     end
 
-    statement = "select apartments.id, apartments.rent, apartments.size, apartments.bedrooms, apartments.bathrooms, apartments.apartmentcomplex_id, complexes.name from apartments inner join complexes on apartments.apartmentcomplex_id = complexes.id where rent between #{min} and #{max} order by #{sort_by}"
+    statement = "select apartments.id, apartments.rent, apartments.size, apartments.bedrooms, apartments.bathrooms, apartments.apartmentcomplex_id, apartmentcomplexes.name from apartments inner join apartmentcomplexes on apartments.apartmentcomplex_id = apartmentcomplexes.id where rent between #{min} and #{max} order by #{sort_by}"
 
     results = db.execute(statement)
     results.map do |row_hash|
@@ -96,7 +101,7 @@ class Apartment
 
   def to_s
     db = Environment.database_connection
-    statement = "select name from complexes where id= '#{apartmentcomplex_id}'"
+    statement = "select name from apartmentcomplexes where id= '#{apartmentcomplex_id}'"
     complex_name = db.execute(statement)
     if price_per_sqft
       price_per = sprintf "%.3f", price_per_sqft

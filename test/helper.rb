@@ -11,7 +11,7 @@ class AptHuntTest < MiniTest::Unit::TestCase
   end
 
   def teardown
-    database.execute("delete from complexes")
+    database.execute("delete from apartmentcomplexes")
     database.execute("delete from apartments")
   end
 

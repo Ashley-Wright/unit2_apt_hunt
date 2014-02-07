@@ -9,8 +9,8 @@ class TestEnteringComplexes < AptHuntTest
     expected = [983.57, 1474, 3, 1.5, complex.id]
     assert_equal expected, results[0]
 
-    result = database.execute("select count(id) from apartments")
-    assert_equal 1, result[0][0]
+    result = Apartment.count
+    assert_equal 1, result
   end
 
   def test_valid_apartment_message
@@ -67,14 +67,14 @@ EOS
 
   def test_invalid_apartment_not_saved_missing_arguments
     `./apt_hunter create apartment --environment test`
-    result = database.execute("select count(id) from apartments")
-    assert_equal 0, result[0][0]
+    result = Apartment.count
+    assert_equal 0, result
   end
 
   def test_invalid_apartment_not_saved_bad_complex
     `./apt_hunter create apartment --rent 983.57 --size 1474 --bedrooms 3 --bathrooms 1.5 --complex 'Garden Terrace' --environment test`
-    result = database.execute("select count(id) from apartments")
-    assert_equal 0, result[0][0]
+    result = Apartment.count
+    assert_equal 0, result
   end
 
 end
