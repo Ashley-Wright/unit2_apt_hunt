@@ -10,8 +10,8 @@ class TestDeletingApartments < AptHuntTest
     apartment3 = Apartment.create(rent: 983.57, size: 1474, bedrooms: 3, bathrooms: 1.5, apartmentcomplex_id: complex2.id)
 
     `./apt_hunter delete apartment --id #{apartment2.id} --environment test`
-    result = database.execute("select * from apartments where id = #{apartment2.id}")
-    assert_equal [], result
+    result = Apartment.get(apartment2.id)
+    assert_equal nil, result
 
     results = Apartment.count
     assert_equal 2, results

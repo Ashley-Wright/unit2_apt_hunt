@@ -33,9 +33,10 @@ class TestEnteringComplexes < AptHuntTest
 
   def test_valid_complex_saved
     `./apt_hunter create complex --name 'Garden Terrace' --zip 37075 --parking garage --website 'www.gardenterrace.com' --phone '555-555-5555' --environment test`
-    results = database.execute("select name, zip, parking, website, phone from apartmentcomplexes")
+    results = ApartmentComplex.view.first
+    actual = [results.name, results.zip, results.parking, results.website, results.phone]
     expected = ["Garden Terrace", 37075, "garage", "www.gardenterrace.com", "555-555-5555"]
-    assert_equal expected, results[0]
+    assert_equal expected, actual
 
     result = ApartmentComplex.count
     assert_equal 1, result

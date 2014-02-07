@@ -5,9 +5,10 @@ class TestEnteringComplexes < AptHuntTest
     complex = ApartmentComplex.create(name: "Garden Terrace", zip: 37075, parking: "garage", website: "www.gardenterrace.com", phone: "555-555-5555")
     `./apt_hunter create apartment --rent 983.57 --size 1474 --bedrooms 3 --bathrooms 1.5 --complex 'Garden Terrace' --environment test`
 
-    results = database.execute("select rent, size, bedrooms, bathrooms, apartmentcomplex_id from apartments")
+    results = Apartment.view.first
+    actual = [results.rent, results.size, results.bedrooms, results.bathrooms, results.apartmentcomplex_id]
     expected = [983.57, 1474, 3, 1.5, complex.id]
-    assert_equal expected, results[0]
+    assert_equal expected, actual
 
     result = Apartment.count
     assert_equal 1, result
