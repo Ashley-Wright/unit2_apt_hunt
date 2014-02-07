@@ -1,7 +1,7 @@
 require_relative '../lib/environment'
 
 class Apartment
-  attr_accessor :rent, :size, :bedrooms, :bathrooms, :complex_id, :price_per_sqft
+  attr_accessor :rent, :size, :bedrooms, :bathrooms, :apartmentcomplex_id, :price_per_sqft
   attr_reader :id
 
   def initialize attributes = {}
@@ -17,7 +17,7 @@ class Apartment
   end
 
   def update attributes = {}
-    [:rent, :size, :bedrooms, :bathrooms, :complex_id].each do |attr|
+    [:rent, :size, :bedrooms, :bathrooms, :apartmentcomplex_id].each do |attr|
       if attributes[attr]
         self.send("#{attr}=", attributes[attr])
       end
@@ -28,10 +28,10 @@ class Apartment
   def save
     db = Environment.database_connection
     if id
-      statement = "update apartments set rent=#{rent}, size=#{size}, bedrooms=#{bedrooms}, bathrooms=#{bathrooms}, complex_id=#{complex_id} where id=#{id}"
+      statement = "update apartments set rent=#{rent}, size=#{size}, bedrooms=#{bedrooms}, bathrooms=#{bathrooms}, apartmentcomplex_id=#{apartmentcomplex_id} where id=#{id}"
       db.execute(statement)
     else
-      statement = "insert into apartments(rent, size, bedrooms, bathrooms, complex_id) values(#{rent}, #{size}, #{bedrooms}, #{bathrooms}, #{complex_id})"
+      statement = "insert into apartments(rent, size, bedrooms, bathrooms, apartmentcomplex_id) values(#{rent}, #{size}, #{bedrooms}, #{bathrooms}, #{apartmentcomplex_id})"
       db.execute(statement)
       @id = db.last_insert_row_id
     end
@@ -43,7 +43,7 @@ class Apartment
     statement = "select * from apartments where id = #{id}"
     row = db.get_first_row(statement)
     if row
-      apartment = Apartment.new(rent: row["rent"], size: row["size"], bedrooms: row["bedrooms"], bathrooms: row["bathrooms"], complex_id: row["complex_id"])
+      apartment = Apartment.new(rent: row["rent"], size: row["size"], bedrooms: row["bedrooms"], bathrooms: row["bathrooms"], apartmentcomplex_id: row["apartmentcomplex_id"])
       apartment.send("id=", row["id"])
       apartment
     else
@@ -51,23 +51,23 @@ class Apartment
     end
   end
 
-  def self.get_complex_id complex_name
+  def self.get_apartmentcomplex_id complex_name
     db = Environment.database_connection
     statement = "select id from complexes where name= '#{complex_name}'"
-    complex_id = db.execute(statement)
-    complex_id
+    apartmentcomplex_id = db.execute(statement)
+    apartmentcomplex_id
   end
 
   def self.view
     db = Environment.database_connection
     db.results_as_hash = true
     sort_by = 'complexes.name'
-    statement = "select apartments.id, apartments.rent, apartments.size, apartments.bedrooms, apartments.bathrooms, apartments.complex_id, complexes.name from apartments inner join complexes on apartments.complex_id = complexes.id order by #{sort_by}"
+    statement = "select apartments.id, apartments.rent, apartments.size, apartments.bedrooms, apartments.bathrooms, apartments.apartmentcomplex_id, complexes.name from apartments inner join complexes on apartments.apartmentcomplex_id = complexes.id order by #{sort_by}"
 
     results = db.execute(statement)
     results.map do |row_hash|
       price_per = row_hash["rent"] / row_hash["size"]
-      apartment = Apartment.new(rent: row_hash["rent"], size: row_hash["size"], bedrooms: row_hash["bedrooms"], bathrooms: row_hash["bathrooms"], price_per_sqft: price_per, complex_id: row_hash["complex_id"])
+      apartment = Apartment.new(rent: row_hash["rent"], size: row_hash["size"], bedrooms: row_hash["bedrooms"], bathrooms: row_hash["bathrooms"], price_per_sqft: price_per, apartmentcomplex_id: row_hash["apartmentcomplex_id"])
       apartment.send("id=", row_hash["id"])
       apartment
     end
@@ -83,12 +83,12 @@ class Apartment
       sort_by = 'complexes.name'
     end
 
-    statement = "select apartments.id, apartments.rent, apartments.size, apartments.bedrooms, apartments.bathrooms, apartments.complex_id, complexes.name from apartments inner join complexes on apartments.complex_id = complexes.id where rent between #{min} and #{max} order by #{sort_by}"
+    statement = "select apartments.id, apartments.rent, apartments.size, apartments.bedrooms, apartments.bathrooms, apartments.apartmentcomplex_id, complexes.name from apartments inner join complexes on apartments.apartmentcomplex_id = complexes.id where rent between #{min} and #{max} order by #{sort_by}"
 
     results = db.execute(statement)
     results.map do |row_hash|
       price_per = row_hash["rent"] / row_hash["size"]
-      apartment = Apartment.new(rent: row_hash["rent"], size: row_hash["size"], bedrooms: row_hash["bedrooms"], bathrooms: row_hash["bathrooms"], price_per_sqft: price_per, complex_id: row_hash["complex_id"])
+      apartment = Apartment.new(rent: row_hash["rent"], size: row_hash["size"], bedrooms: row_hash["bedrooms"], bathrooms: row_hash["bathrooms"], price_per_sqft: price_per, apartmentcomplex_id: row_hash["apartmentcomplex_id"])
       apartment.send("id=", row_hash["id"])
       apartment
     end
@@ -96,7 +96,7 @@ class Apartment
 
   def to_s
     db = Environment.database_connection
-    statement = "select name from complexes where id= '#{complex_id}'"
+    statement = "select name from complexes where id= '#{apartmentcomplex_id}'"
     complex_name = db.execute(statement)
     if price_per_sqft
       price_per = sprintf "%.3f", price_per_sqft

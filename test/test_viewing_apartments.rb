@@ -3,14 +3,14 @@ require_relative 'helper'
 class TestViewingApartments < AptHuntTest
 
   def test_viewing_all_apartments
-    complex1 = AptComplex.create(name: "Garden Terrace", zip: 37075, parking: "garage", website: "www.gardenterrace.com", phone: "555-555-5555")
-    complex2 = AptComplex.create(name: "Oak Village", zip: 37075, parking: "garage", website: "www.oakvillage.com", phone: "555-555-5556")
-    complex3 = AptComplex.create(name: "Eagle Point", zip: 37075, parking: "uncovered", website: "www.eaglepoint.com", phone: "555-555-5557")
+    complex1 = ApartmentComplex.create(name: "Garden Terrace", zip: 37075, parking: "garage", website: "www.gardenterrace.com", phone: "555-555-5555")
+    complex2 = ApartmentComplex.create(name: "Oak Village", zip: 37075, parking: "garage", website: "www.oakvillage.com", phone: "555-555-5556")
+    complex3 = ApartmentComplex.create(name: "Eagle Point", zip: 37075, parking: "uncovered", website: "www.eaglepoint.com", phone: "555-555-5557")
 
-    apartment1 = Apartment.create(rent: 853.57, size: 1476, bedrooms: 3, bathrooms: 1.5, complex_id: complex1.id)
-    apartment2 = Apartment.create(rent: 983.57, size: 1354, bedrooms: 3, bathrooms: 1.5, complex_id: complex2.id)
-    apartment3 = Apartment.create(rent: 983.57, size: 1474, bedrooms: 3, bathrooms: 1.5, complex_id: complex3.id)
-    apartment4 = Apartment.create(rent: 783.57, size: 1374, bedrooms: 3, bathrooms: 1.5, complex_id: complex3.id)
+    apartment1 = Apartment.create(rent: 853.57, size: 1476, bedrooms: 3, bathrooms: 1.5, apartmentcomplex_id: complex1.id)
+    apartment2 = Apartment.create(rent: 983.57, size: 1354, bedrooms: 3, bathrooms: 1.5, apartmentcomplex_id: complex2.id)
+    apartment3 = Apartment.create(rent: 983.57, size: 1474, bedrooms: 3, bathrooms: 1.5, apartmentcomplex_id: complex3.id)
+    apartment4 = Apartment.create(rent: 783.57, size: 1374, bedrooms: 3, bathrooms: 1.5, apartmentcomplex_id: complex3.id)
 
     shell_output = `./apt_hunter view apartment --environment test`
     expected = <<EOS

@@ -1,6 +1,6 @@
 require_relative '../lib/environment'
 
-class AptComplex
+class ApartmentComplex
   attr_accessor :name, :zip, :parking, :website, :phone
   attr_reader :id
 
@@ -11,7 +11,7 @@ class AptComplex
   end
 
   def self.create attributes = {}
-    complex = AptComplex.new(attributes)
+    complex = ApartmentComplex.new(attributes)
     complex.save
     complex
   end
@@ -31,7 +31,7 @@ class AptComplex
     statement = "select * from complexes where id = #{id}"
     row = db.get_first_row(statement)
     if row
-      complex = AptComplex.new(name: row["name"], zip: row["zip"], parking: row["parking"], website: row["website"], phone: row["phone"])
+      complex = ApartmentComplex.new(name: row["name"], zip: row["zip"], parking: row["parking"], website: row["website"], phone: row["phone"])
       complex.send("id=", row["id"])
       return complex
     else
@@ -57,7 +57,7 @@ class AptComplex
     statement = "select * from complexes order by name ASC"
     results = db.execute(statement)
     results.map do |row_hash|
-      complex = AptComplex.new(name: row_hash["name"], zip: row_hash["zip"], parking: row_hash["parking"], website: row_hash["website"], phone: row_hash["phone"])
+      complex = ApartmentComplex.new(name: row_hash["name"], zip: row_hash["zip"], parking: row_hash["parking"], website: row_hash["website"], phone: row_hash["phone"])
       complex.send("id=", row_hash["id"])
       complex
     end

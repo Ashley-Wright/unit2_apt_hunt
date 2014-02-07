@@ -3,7 +3,7 @@ require_relative 'helper'
 class TestUpdatingComplexes < AptHuntTest
 
   def test_updating_existing_record_single_field
-    complex = AptComplex.new(name: "Eagle Point", zip: 37075, parking: "covered", website: "www.eaglepoint.com", phone: "555-555-5555")
+    complex = ApartmentComplex.new(name: "Eagle Point", zip: 37075, parking: "covered", website: "www.eaglepoint.com", phone: "555-555-5555")
     complex.save
     id = complex.id
     command = "./apt_hunter edit complex --id #{id} --name 'Eagle Pointe' --environment test"
@@ -15,7 +15,7 @@ EOS
   end
 
   def test_updating_existing_record_multiple_fields
-    complex = AptComplex.new(name: "Eagle Point", zip: 37075, parking: "covered", website: "www.eaglepoint.com", phone: "555-555-5555")
+    complex = ApartmentComplex.new(name: "Eagle Point", zip: 37075, parking: "covered", website: "www.eaglepoint.com", phone: "555-555-5555")
     complex.save
     id = complex.id
     command = "./apt_hunter edit complex --id #{id} --name 'Eagle Pointe' --zip 37074 --parking garage --website 'www.eaglepointe.com' --phone '555-555-5556' --environment test"

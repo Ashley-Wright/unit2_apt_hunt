@@ -2,8 +2,8 @@ require_relative 'helper'
 
 class TestUpdatingApartments < AptHuntTest
   def test_updating_existing_record_single_field
-    complex = AptComplex.create(name: "Garden Terrace", zip: 37075, parking: "garage", website: "www.gardenterrace.com", phone: "555-555-5555")
-    apartment = Apartment.create(rent: 853.57, size: 1476, bedrooms: 3, bathrooms: 1.5, complex_id: complex.id)
+    complex = ApartmentComplex.create(name: "Garden Terrace", zip: 37075, parking: "garage", website: "www.gardenterrace.com", phone: "555-555-5555")
+    apartment = Apartment.create(rent: 853.57, size: 1476, bedrooms: 3, bathrooms: 1.5, apartmentcomplex_id: complex.id)
 
     command = "./apt_hunter edit apartment --id #{apartment.id} --bedrooms 2 --environment test"
     expected = <<EOS.chomp
@@ -14,9 +14,9 @@ EOS
   end
 
   def test_updating_existing_record_multiple_fields
-    complex1 = AptComplex.create(name: "Garden Terrace", zip: 37075, parking: "garage", website: "www.gardenterrace.com", phone: "555-555-5555")
-    complex2 = AptComplex.create(name: "Eagle Point", zip: 37075, parking: "garage", website: "www.gardenterrace.com", phone: "555-555-5555")
-    apartment = Apartment.create(rent: 853.57, size: 1476, bedrooms: 3, bathrooms: 1.5, complex_id: complex1.id)
+    complex1 = ApartmentComplex.create(name: "Garden Terrace", zip: 37075, parking: "garage", website: "www.gardenterrace.com", phone: "555-555-5555")
+    complex2 = ApartmentComplex.create(name: "Eagle Point", zip: 37075, parking: "garage", website: "www.gardenterrace.com", phone: "555-555-5555")
+    apartment = Apartment.create(rent: 853.57, size: 1476, bedrooms: 3, bathrooms: 1.5, apartmentcomplex_id: complex1.id)
 
     command = "./apt_hunter edit apartment --id #{apartment.id} --rent 953.57 --size 1398 --bedrooms 2 --bathrooms 2 --environment test"
     expected = <<EOS.chomp

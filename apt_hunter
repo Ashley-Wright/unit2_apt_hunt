@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require_relative 'lib/environment'
-require_relative 'models/apt_complex'
+require_relative 'models/apartment_complex'
 require_relative 'models/apartment'
 require_relative 'lib/argument_parser'
 
@@ -25,18 +25,18 @@ class ApartmentHunter
 
   def complex
     if options[:command] == 'create'
-      error_message = AptComplex.validate(options)
+      error_message = ApartmentComplex.validate(options)
 
       if error_message.nil?
-        AptComplex.create(name: options[:name], zip: options[:zip], parking: options[:parking], website: options[:website], phone: options[:phone])
+        ApartmentComplex.create(name: options[:name], zip: options[:zip], parking: options[:parking], website: options[:website], phone: options[:phone])
         puts "Complex #{options[:name]} was created."
       else
         puts error_message
       end
     elsif options[:command] == 'view'
-      puts AptComplex.view
+      puts ApartmentComplex.view
     elsif options[:command] == "edit"
-      if complex = AptComplex.get(options[:id])
+      if complex = ApartmentComplex.get(options[:id])
         complex.update(options)
         puts "Complex #{complex.id} was updated."
         puts complex.to_s
@@ -51,11 +51,11 @@ class ApartmentHunter
       error_message = Apartment.validate(options)
 
       if error_message.nil?
-        options[:complex_id] = Apartment.get_complex_id(options[:complex])
-        if options[:complex_id].empty?
+        options[:apartmentcomplex_id] = Apartment.get_apartmentcomplex_id(options[:complex])
+        if options[:apartmentcomplex_id].empty?
           puts "#{options[:complex]} complex does not exist."
         else
-          apartment = Apartment.create(rent: options[:rent], size: options[:size], bedrooms: options[:bedrooms], bathrooms: options[:bathrooms], complex_id: options[:complex_id][0][0])
+          apartment = Apartment.create(rent: options[:rent], size: options[:size], bedrooms: options[:bedrooms], bathrooms: options[:bathrooms], apartmentcomplex_id: options[:apartmentcomplex_id][0][0])
           puts "Apartment was created."
           puts apartment.to_s
         end
