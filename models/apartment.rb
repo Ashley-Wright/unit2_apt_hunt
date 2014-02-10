@@ -22,7 +22,7 @@ class Apartment < ActiveRecord::Base
 
   def to_s
     complex = ApartmentComplex.find_by(id: apartmentapartmentcomplex_id)
-    "#{id}   $#{rent}   #{size}   #{bedrooms}   #{bathrooms}   #{complex.name}"
+    "$#{rent}   #{size}   #{bedrooms}   #{bathrooms}   #{complex.name}"
   end
 
 end

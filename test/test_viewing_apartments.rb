@@ -21,10 +21,10 @@ class TestViewingApartments < AptHuntTest
 
     shell_output = `./apt_hunter view apartment --environment test`
     expected = <<EOS
-#{apartment4.id}   $783   1374   3   1.5   Eagle Point
-#{apartment1.id}   $853   1476   3   1.5   Garden Terrace
-#{apartment2.id}   $983   1354   3   1.5   Oak Village
-#{apartment3.id}   $983   1474   3   1.5   Eagle Point
+$783   1374   3   1.5   Eagle Point
+$853   1476   3   1.5   Garden Terrace
+$983   1354   3   1.5   Oak Village
+$983   1474   3   1.5   Eagle Point
 EOS
   assert_equal expected, shell_output
   end

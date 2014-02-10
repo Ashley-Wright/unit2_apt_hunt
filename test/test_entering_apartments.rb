@@ -17,15 +17,15 @@ class TestEnteringComplexes < AptHuntTest
 
   def test_valid_apartment_message
     complex = ApartmentComplex.create(name: "Garden Terrace", zip: 37075, parking: "garage", website: "www.gardenterrace.com", phone: "555-555-5555")
-    # shell_output = `./apt_hunter create apartment --rent 983 --size 1474 --bedrooms 3 --bathrooms 1.5 --complex 'Garden Terrace' --environment test`
-    apartment = Apartment.new(rent: 983, size: 1474, bedrooms: 3, bathrooms: 1.5, apartmentapartmentcomplex_id: complex.id)
-    apartment.save
+    shell_output = `./apt_hunter create apartment --rent 983 --size 1474 --bedrooms 3 --bathrooms 1.5 --complex 'Garden Terrace' --environment test`
+    # apartment = Apartment.new(rent: 983, size: 1474, bedrooms: 3, bathrooms: 1.5, apartmentapartmentcomplex_id: complex.id)
+    # apartment.save
 
     expected = <<EOS
 Apartment was created.
-#{apartment.id}   $983   1474   3   1.5   Garden Terrace
+$983   1474   3   1.5   Garden Terrace
 EOS
-    assert expected
+    assert_equal expected, shell_output
   end
 
   def test_error_message_missing_rent

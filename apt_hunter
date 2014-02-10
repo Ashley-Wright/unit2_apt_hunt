@@ -71,8 +71,8 @@ class ApartmentHunter
       end
 
     elsif command == 'edit'
-      if apartment = Apartment.get(options[:id])
-        apartment.update(options)
+      if apartment = Apartment.find_by(id: options[:id])
+        apartment.update(rent: options[:rent], size: options[:size], bedrooms: options[:bedrooms], bathrooms: options[:bathrooms])
         puts "Apartment #{options[:id]} was updated."
         puts apartment.to_s
       else
@@ -85,7 +85,6 @@ class ApartmentHunter
 
     elsif command == 'view'
       puts Apartment.all
-      # puts Apartment.order(apartment_complex.name).all
 
     elsif command == 'filter'
       puts Apartment.filter(options[:min], options[:max], options[:sort])
