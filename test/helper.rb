@@ -16,4 +16,13 @@ class AptHuntTest < MiniTest::Unit::TestCase
     actual = `#{command} --environment test`.strip
     assert_equal expected, actual
   end
+
+  def execute_popen command
+    shell_output = ""
+    IO.popen("#{command} --environment test", 'r+') do |pipe|
+      pipe.puts ""
+      shell_output = pipe.read
+    end
+    shell_output
+  end
 end

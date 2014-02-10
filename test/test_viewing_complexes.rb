@@ -16,7 +16,7 @@ EOS
   end
 
   def test_viewing_complexes_empty_table
-    results = ApartmentComplex.view
+    results = ApartmentComplex.all
     assert_equal [], results
   end
 end

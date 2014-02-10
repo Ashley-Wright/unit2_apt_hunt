@@ -16,7 +16,6 @@ class ApartmentHunter
   end
 
   def main
-    # database = Environment.database_connection
     Environment.connect_to_database
     if options[:table] == 'complex'
       self.complex
@@ -26,19 +25,23 @@ class ApartmentHunter
   end
 
   def complex
-    # command = options.delete(:command)
-    if options[:command] == 'create'
+    command = options.delete(:command)
+    if command == 'create'
       error_message = ApartmentComplex.validate(options)
 
       if error_message.nil?
-        ApartmentComplex.create(name: options[:name], zip: options[:zip], parking: options[:parking], website: options[:website], phone: options[:phone])
+        complex = ApartmentComplex.new(name: options[:name], zip: options[:zip], parking: options[:parking], website: options[:website], phone: options[:phone])
+        complex.save
+        # ApartmentComplex.create(name: options[:name], zip: options[:zip], parking: options[:parking], website: options[:website], phone: options[:phone])
         puts "Complex #{options[:name]} was created."
       else
         puts error_message
       end
-    elsif options[:command] == 'view'
-      puts ApartmentComplex.view
-    elsif options[:command] == "edit"
+
+    elsif command == 'view'
+      puts ApartmentComplex.all
+      # puts ApartmentComplex.view
+    elsif command == "edit"
       if complex = ApartmentComplex.get(options[:id])
         complex.update(options)
         puts "Complex #{complex.id} was updated."
@@ -50,7 +53,8 @@ class ApartmentHunter
   end
 
   def apartment
-    if options[:command] == 'create'
+    command = options.delete(:command)
+    if command == 'create'
       error_message = Apartment.validate(options)
 
       if error_message.nil?
@@ -66,7 +70,7 @@ class ApartmentHunter
         puts error_message
       end
 
-    elsif options[:command] == 'edit'
+    elsif command == 'edit'
       if apartment = Apartment.get(options[:id])
         apartment.update(options)
         puts "Apartment #{options[:id]} was updated."
@@ -75,14 +79,14 @@ class ApartmentHunter
         puts "Apartment #{options[:id]} does not exist."
       end
 
-    elsif options[:command] == 'delete'
+    elsif command == 'delete'
       Apartment.delete(options[:id])
       puts "Apartment #{options[:id]} was deleted."
 
-    elsif options[:command] == 'view'
+    elsif command == 'view'
       puts Apartment.view
 
-    elsif options[:command] == 'filter'
+    elsif command == 'filter'
       puts Apartment.filter(options[:min], options[:max], options[:sort])
     end
   end

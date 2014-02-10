@@ -1,5 +1,6 @@
 class Apartment < ActiveRecord::Base
   belongs_to :apartment_complex
+  default_scope { order("rent DESC") }
 end
 
 
