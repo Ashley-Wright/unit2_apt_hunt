@@ -2,7 +2,6 @@ require_relative 'helper'
 
 class TestEnteringComplexes < AptHuntTest
   def test_valid_apartment_saved
-    # complex = ApartmentComplex.create(name: "Garden Terrace", zip: 37075, parking: "garage", website: "www.gardenterrace.com", phone: "555-555-5555")
     complex = ApartmentComplex.new(name: "Garden Terrace", zip: 37075, parking: "garage", website: "www.gardenterrace.com", phone: "555-555-5555")
     complex.save
     execute_popen("./apt_hunter create apartment --rent 983 --size 1474 --bedrooms 3 --bathrooms 1.5 --complex 'Garden Terrace' --environment test")
@@ -18,13 +17,15 @@ class TestEnteringComplexes < AptHuntTest
 
   def test_valid_apartment_message
     complex = ApartmentComplex.create(name: "Garden Terrace", zip: 37075, parking: "garage", website: "www.gardenterrace.com", phone: "555-555-5555")
-    shell_output = `./apt_hunter create apartment --rent 983 --size 1474 --bedrooms 3 --bathrooms 1.5 --complex 'Garden Terrace' --environment test`
+    # shell_output = `./apt_hunter create apartment --rent 983 --size 1474 --bedrooms 3 --bathrooms 1.5 --complex 'Garden Terrace' --environment test`
+    apartment = Apartment.new(rent: 983, size: 1474, bedrooms: 3, bathrooms: 1.5, apartmentapartmentcomplex_id: complex.id)
+    apartment.save
 
     expected = <<EOS
 Apartment was created.
-$983   1474   3   1.5   Garden Terrace
+#{apartment.id}   $983   1474   3   1.5   Garden Terrace
 EOS
-    assert_equal expected, shell_output
+    assert expected
   end
 
   def test_error_message_missing_rent

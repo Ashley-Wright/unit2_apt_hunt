@@ -1,6 +1,6 @@
 class Apartment < ActiveRecord::Base
   belongs_to :apartment_complex
-  default_scope { order("rent DESC") }
+  default_scope { order("rent ASC") }
 
   def self.validate options
     missing_arguments = []
@@ -22,7 +22,7 @@ class Apartment < ActiveRecord::Base
 
   def to_s
     complex = ApartmentComplex.find_by(id: apartmentapartmentcomplex_id)
-    "$#{rent}   #{size}   #{bedrooms}   #{bathrooms}   #{complex.name}"
+    "#{id}   $#{rent}   #{size}   #{bedrooms}   #{bathrooms}   #{complex.name}"
   end
 
 end
