@@ -57,14 +57,28 @@ class ApartmentHunter
       error_message = Apartment.validate(options)
 
       if error_message.nil?
-        options[:apartmentcomplex_id] = Apartment.get_apartmentcomplex_id(options[:complex])
-        if options[:apartmentcomplex_id].empty?
+        # options[:apartmentcomplex_id] = ApartmentComplex.find_by(name: options[:complex])
+        complex = ApartmentComplex.find_by(name: options[:complex])
+        # complex_id = complex.id
+        if complex.nil?
           puts "#{options[:complex]} complex does not exist."
         else
-          apartment = Apartment.create(rent: options[:rent], size: options[:size], bedrooms: options[:bedrooms], bathrooms: options[:bathrooms], apartmentcomplex_id: options[:apartmentcomplex_id][0][0])
+          apartment = Apartment.new(rent: options[:rent], size: options[:size], bedrooms: options[:bedrooms], bathrooms: options[:bathrooms], apartmentapartmentcomplex_id: complex.id)
+          apartment.save
           puts "Apartment was created."
-          puts apartment.to_s
+          puts apartment
         end
+
+
+
+        # if options[:apartmentcomplex_id].empty?
+        #   puts "#{options[:complex]} complex does not exist."
+        # else
+        #   apartment = Apartment.new(rent: options[:rent], size: options[:size], bedrooms: options[:bedrooms], bathrooms: options[:bathrooms], apartmentapartmentcomplex_id: options[:apartmentcomplex_id][0][0])
+        #   apartment.save
+        #   puts "Apartment was created."
+        #   # puts apartment.to_s
+        # end
       else
         puts error_message
       end

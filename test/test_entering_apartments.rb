@@ -2,12 +2,14 @@ require_relative 'helper'
 
 class TestEnteringComplexes < AptHuntTest
   def test_valid_apartment_saved
-    complex = ApartmentComplex.create(name: "Garden Terrace", zip: 37075, parking: "garage", website: "www.gardenterrace.com", phone: "555-555-5555")
-    `./apt_hunter create apartment --rent 983.57 --size 1474 --bedrooms 3 --bathrooms 1.5 --complex 'Garden Terrace' --environment test`
+    # complex = ApartmentComplex.create(name: "Garden Terrace", zip: 37075, parking: "garage", website: "www.gardenterrace.com", phone: "555-555-5555")
+    complex = ApartmentComplex.new(name: "Garden Terrace", zip: 37075, parking: "garage", website: "www.gardenterrace.com", phone: "555-555-5555")
+    complex.save
+    execute_popen("./apt_hunter create apartment --rent 983 --size 1474 --bedrooms 3 --bathrooms 1.5 --complex 'Garden Terrace' --environment test")
 
-    results = Apartment.view.first
-    actual = [results.rent, results.size, results.bedrooms, results.bathrooms, results.apartmentcomplex_id]
-    expected = [983.57, 1474, 3, 1.5, complex.id]
+    results = Apartment.all.first
+    actual = [results.rent, results.size, results.bedrooms, ('%0.1f' % results.bathrooms).to_f, results.apartmentapartmentcomplex_id]
+    expected = [983, 1474, 3, 1.5, complex.id]
     assert_equal expected, actual
 
     result = Apartment.count
@@ -16,11 +18,11 @@ class TestEnteringComplexes < AptHuntTest
 
   def test_valid_apartment_message
     complex = ApartmentComplex.create(name: "Garden Terrace", zip: 37075, parking: "garage", website: "www.gardenterrace.com", phone: "555-555-5555")
-    shell_output = `./apt_hunter create apartment --rent 983.57 --size 1474 --bedrooms 3 --bathrooms 1.5 --complex 'Garden Terrace' --environment test`
+    shell_output = `./apt_hunter create apartment --rent 983 --size 1474 --bedrooms 3 --bathrooms 1.5 --complex 'Garden Terrace' --environment test`
 
     expected = <<EOS
 Apartment was created.
-$983.57   1474   3   1.5   Garden Terrace
+$983   1474   3   1.5   Garden Terrace
 EOS
     assert_equal expected, shell_output
   end
