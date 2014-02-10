@@ -87,7 +87,8 @@ class ApartmentHunter
       puts Apartment.all
 
     elsif command == 'filter'
-      puts Apartment.filter(options[:min], options[:max], options[:sort])
+      puts Apartment.where(rent: options[:min]..options[:max])
+      # puts Apartment.filter(options[:min], options[:max], options[:sort])
     end
   end
 
