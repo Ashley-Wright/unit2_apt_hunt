@@ -12,10 +12,12 @@ class ApartmentHunter
     @options[:command] = ARGV[0]
     @options[:table] = ARGV[1]
     Environment.environment = @options[:environment] || "production"
+    @options.delete(:environment)
   end
 
   def main
-    database = Environment.database_connection
+    # database = Environment.database_connection
+    Environment.connect_to_database
     if options[:table] == 'complex'
       self.complex
     elsif options[:table] == 'apartment'
@@ -24,6 +26,7 @@ class ApartmentHunter
   end
 
   def complex
+    # command = options.delete(:command)
     if options[:command] == 'create'
       error_message = ApartmentComplex.validate(options)
 

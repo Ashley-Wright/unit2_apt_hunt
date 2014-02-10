@@ -1,6 +1,6 @@
 class CreateApartmentComplexes < ActiveRecord::Migration
   def change
-    create_table :apartmentcomplexes do |t|
+    create_table :apartment_complexes do |t|
       t.string :name
       t.integer :zip
       t.string :parking

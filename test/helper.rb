@@ -4,15 +4,12 @@ require_relative '../lib/environment'
 class AptHuntTest < MiniTest::Unit::TestCase
   def setup
     Environment.environment = "test"
-  end
-
-  def database
-    Environment.database_connection
+    Environment.connect_to_database
   end
 
   def teardown
-    database.execute("delete from apartmentcomplexes")
-    database.execute("delete from apartments")
+    ApartmentComplex.destroy_all
+    Apartment.destroy_all
   end
 
   def assert_command_output expected, command

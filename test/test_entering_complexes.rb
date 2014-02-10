@@ -33,7 +33,7 @@ class TestEnteringComplexes < AptHuntTest
 
   def test_valid_complex_saved
     `./apt_hunter create complex --name 'Garden Terrace' --zip 37075 --parking garage --website 'www.gardenterrace.com' --phone '555-555-5555' --environment test`
-    results = ApartmentComplex.view.first
+    results = ApartmentComplex.all.first
     actual = [results.name, results.zip, results.parking, results.website, results.phone]
     expected = ["Garden Terrace", 37075, "garage", "www.gardenterrace.com", "555-555-5555"]
     assert_equal expected, actual

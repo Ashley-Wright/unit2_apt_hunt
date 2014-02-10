@@ -13,7 +13,7 @@
 
 ActiveRecord::Schema.define(version: 201402061433) do
 
-  create_table "apartmentcomplexes", force: true do |t|
+  create_table "apartment_complexes", force: true do |t|
     t.string  "name"
     t.integer "zip"
     t.string  "parking"
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 201402061433) do
     t.integer "size"
     t.integer "bedrooms"
     t.decimal "bathrooms"
-    t.integer "apartmentcomplex_id"
+    t.integer "apartmentapartmentcomplex_id"
   end
 
 end
